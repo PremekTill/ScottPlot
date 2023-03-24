@@ -30,8 +30,8 @@ public partial class AvaPlot : UserControl, IPlotControl
     {
         FilePickerFileTypes.ImagePng,
         FilePickerFileTypes.ImageJpg,
-        new("BMP image") { Patterns = new[] { "*.jpg", "*.jpeg" }, AppleUniformTypeIdentifiers = new[] { "public.bmp" }, MimeTypes = new[] { "image/bmp" } },
-        new("WebP image") { Patterns = new[] { "*.jpg", "*.jpeg" }, AppleUniformTypeIdentifiers = new[] { "public.bmp" }, MimeTypes = new[] { "image/bmp" } },
+        new("BMP image") { Patterns = new[] { "*.bmp" }, AppleUniformTypeIdentifiers = new[] { "public.bmp" }, MimeTypes = new[] { "image/bmp" } },
+        new("WebP image") { Patterns = new[] { "*.webp" }, AppleUniformTypeIdentifiers = new[] { "public.webP" }, MimeTypes = new[] { "image/webp" } },
         FilePickerFileTypes.All,
     };
 
