@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0</TargetFrameworks>
+        <TargetFrameworks>net6.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
@@ -29,8 +29,7 @@
 
     <!-- Include additional files for the NuGet package -->
     <ItemGroup>
-        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true"
-            PackagePath="icon.png" />
+        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 
@@ -40,8 +39,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Avalonia" Version="0.10.*" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
+        <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 </Project>

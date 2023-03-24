@@ -12,8 +12,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Visuals.Media.Imaging;
-using Avalonia.VisualTree;
+using Avalonia.Platform.Storage;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -27,13 +26,13 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
-    private readonly List<FileDialogFilter> fileDialogFilters = new()
+    private readonly List<FilePickerFileType> fileDialogFilters = new()
     {
-        new() { Name = "PNG Files", Extensions = new List<string> { "png" } },
-        new() { Name = "JPEG Files", Extensions = new List<string> { "jpg", "jpeg" } },
-        new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } },
-        new() { Name = "WebP Files", Extensions = new List<string> { "webp" } },
-        new() { Name = "All Files", Extensions = new List<string> { "*" } },
+        FilePickerFileTypes.ImagePng,
+        FilePickerFileTypes.ImageJpg,
+        new("BMP image") { Patterns = new[] { "*.jpg", "*.jpeg" }, AppleUniformTypeIdentifiers = new[] { "public.bmp" }, MimeTypes = new[] { "image/bmp" } },
+        new("WebP image") { Patterns = new[] { "*.jpg", "*.jpeg" }, AppleUniformTypeIdentifiers = new[] { "public.bmp" }, MimeTypes = new[] { "image/bmp" } },
+        FilePickerFileTypes.All,
     };
 
     public AvaPlot()
@@ -73,15 +72,15 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     private async void OpenSaveImageDialog()
     {
-        SaveFileDialog dialog = new() { InitialFileName = Interaction.DefaultSaveImageFilename, Filters = fileDialogFilters };
-        Task<string?> filenameTask = dialog.ShowAsync((Window)this.GetVisualRoot());
+        var topLevel = TopLevel.GetTopLevel(this) ?? throw new NullReferenceException("Invalid TopLevel");
+        var filenameTask = topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions() { SuggestedFileName = Interaction.DefaultSaveImageFilename, FileTypeChoices = fileDialogFilters });
         var filename = await filenameTask;
 
-        if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
+        if (filenameTask.IsFaulted || filename is null || string.IsNullOrEmpty(filename.Name))
             return;
 
-        ImageFormat format = ImageFormatLookup.FromFilePath(filename!);
-        Plot.Save(filename!, (int)Width, (int)Height, format);
+        ImageFormat format = ImageFormatLookup.FromFilePath(filename.Path.AbsolutePath);
+        Plot.Save(filename.Path.AbsolutePath, (int)Bounds.Width, (int)Bounds.Height, format);
     }
 
     public void Replace(Interaction interaction)
