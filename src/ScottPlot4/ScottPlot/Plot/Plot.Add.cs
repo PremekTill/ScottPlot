@@ -135,12 +135,7 @@ namespace ScottPlot
         public BarPlot AddBar(double[] values, Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new BarPlot(xs, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
+            return AddBar(values, xs, color);
         }
 
         /// <summary>
@@ -283,9 +278,9 @@ namespace ScottPlot
         /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
-        public FinancePlot AddCandlesticks(OHLC[] ohlcs)
+        public FinancePlot AddCandlesticks(IOHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot(ohlcs)
+            FinancePlot plottable = new(ohlcs)
             {
                 Candle = true,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
@@ -860,9 +855,9 @@ namespace ScottPlot
         /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
-        public FinancePlot AddOHLCs(OHLC[] ohlcs)
+        public FinancePlot AddOHLCs(IOHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot(ohlcs)
+            FinancePlot plottable = new(ohlcs)
             {
                 Candle = false,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
